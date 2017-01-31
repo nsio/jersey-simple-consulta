@@ -29,7 +29,7 @@ public class MessageResource {
 		if(messageFilterBean.getYear() > 0){
 			return this.messageService.getMessagesForYear(messageFilterBean.getYear());
 		}
-		if(messageFilterBean.getStart() >= 0 && messageFilterBean.getPageSize() >= 0){
+		if(messageFilterBean.getStart() >= 0 && messageFilterBean.getPageSize() > 0){
 			return this.messageService.getMessagesPaginated(messageFilterBean.getStart(), messageFilterBean.getPageSize());
 		}
 		return messageService.getAllMessages();

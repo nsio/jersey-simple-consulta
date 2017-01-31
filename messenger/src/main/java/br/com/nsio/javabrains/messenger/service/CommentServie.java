@@ -16,7 +16,7 @@ public class CommentServie {
 		return new ArrayList<Comment>(messages.get(messageId).getComments().values());
 	}
 	
-	public Comment getComment(Long messageId, long commentId){
+	public Comment getComment(long messageId, long commentId){
 		return messages.get(messageId).getComments().get(commentId);
 	}
 	
@@ -27,7 +27,7 @@ public class CommentServie {
 		return comment;
 	}
 	
-	public Comment updateComment(long messaegeId, Comment comment){
+	public Comment updateComment(long messageId, Comment comment){
 		Map<Long, Comment> comments = messages.get(messageId).getComments();
 		if(comment.getId() <= 0){
 			return null;
@@ -36,6 +36,9 @@ public class CommentServie {
 		return comment;
 	}
 	
-	//public Comment removeComment()
+	public Comment removeComment(long messageId, long commentId){
+		Map<Long, Comment> comments = messages.get(messageId).getComments();
+		return comments.remove(commentId);
+	}
 	
 }
