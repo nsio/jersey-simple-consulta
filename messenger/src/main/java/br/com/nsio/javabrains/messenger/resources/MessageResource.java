@@ -2,6 +2,7 @@ package br.com.nsio.javabrains.messenger.resources;
 
 import java.util.List;
 
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -10,10 +11,10 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import br.com.nsio.javabrains.messenger.model.Message;
+import br.com.nsio.javabrains.messenger.resources.beans.MessageFilterBean;
 import br.com.nsio.javabrains.messenger.service.MessageService;
 
 @Path("/messages")
@@ -24,14 +25,12 @@ public class MessageResource {
 	private MessageService messageService = new MessageService();
 	
 	@GET
-	public List<Message> getMessages(@QueryParam("year") int year,
-									 @QueryParam("start") int start,
-									 @QueryParam("pageSize") int pageSize){
-		if(year > 0){
-			return this.messageService.getMessagesForYear(year);
+	public List<Message> getMessages(@BeanParam MessageFilterBean messageFilterBean){
+		if(messageFilterBean.getYear() > 0){
+			return this.messageService.getMessagesForYear(messageFilterBean.getYear());
 		}
-		if(start >= 0 && pageSize >= 0){
-			return this.messageService.getMessagesPaginated(start, pageSize);
+		if(messageFilterBean.getStart() >= 0 && messageFilterBean.getPageSize() >= 0){
+			return this.messageService.getMessagesPaginated(messageFilterBean.getStart(), messageFilterBean.getPageSize());
 		}
 		return messageService.getAllMessages();
 	}
@@ -60,6 +59,14 @@ public class MessageResource {
 	@Path("/{codMessage}")
 	public void removeMessage(@PathParam("codMessage") Long codMessage){
 		this.messageService.removeMessage(codMessage);
+	}
+	
+	// Comments
+	// SUBRESOURCEs
+	// Sem a anotacao do metodo http, apenas um link para o sub resource
+	@Path("/{codMessage}/comments")
+	public CommentResource getCommentResource(){
+		return new CommentResource();
 	}
 	
 }
